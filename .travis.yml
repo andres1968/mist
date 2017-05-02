@@ -69,6 +69,8 @@ install:
 
 script:
   - if [[ $TRAVIS_BRANCH != "master" ]]; then unset CSC_LINK CSC_KEY_PASSWORD; fi  # disable macOS code-signing (production certificate) on develop branch
+  - if [[ $GULP_PLATFORM == "win" ]]; then export CSC_LINK=CSC_WIN_LINK; fi
+  - if [[ $GULP_PLATFORM == "win" ]]; then export CSC_KEY_PASSWORD=CSC_WIN_KEY_PASSWORD; fi
   - if [[ $GULP_PLATFORM == "mac" ]]; then travis_wait 60 gulp --$GULP_PLATFORM; fi  # increase timeout for slower mac builds
   - if [[ $GULP_PLATFORM != "mac" ]]; then gulp --$GULP_PLATFORM; fi
   - if [[ $TRAVIS_BRANCH == "master" ]]; then travis_wait 60 gulp --wallet --$GULP_PLATFORM; fi  # also build wallet if on master branch
